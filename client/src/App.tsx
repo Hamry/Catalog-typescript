@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import { Grid } from "@Mantine/core";
 import { ProductCard } from "./components/ProductCard";
 
-//import "./App.css";
-
 interface Product {
   id: string;
   name: string;
