@@ -18,8 +18,42 @@ app.get('/api/hello', (req: Request, res: Response) => {
 });
 
 app.get('/api/products', (req: Request, res: Response) => {
-    res.json(products);
+    const category = req.query.category as string; // Values from req.query are strings or arrays of strings
+    const limitString = req.query.limit as string;
+    const searchTerm = req.query.search === "null" ? null : req.query.search as string;
+    
+    
+    
+    console.log(`
+        category: ${category}
+        limitString: ${limitString}
+        searchTerm: ${searchTerm}
+        `);
+    
+    let filteredProducts = [...products]
+
+
+    if (category) {
+        console.log(`filtering category on ${category}`);
+        filteredProducts = filteredProducts.filter(p => p.category.toLowerCase() == category.toLowerCase());
+    }
+
+    if (searchTerm) {
+        console.log(`filtering search term on ${searchTerm}`)
+        filteredProducts = filteredProducts.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
+    }
+
+    if (limitString) {
+        console.log(`limiting results to ${limitString}`)
+        filteredProducts = filteredProducts.slice(0,parseInt(limitString));
+    }
+    
+    res.json(filteredProducts);
+    console.log(filteredProducts);
+    return;
+    
 });
+
 
 
 app.listen(PORT, () => {
